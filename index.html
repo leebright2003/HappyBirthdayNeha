@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wait for it...</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Scene 1: Locked / Countdown -->
+    <div id="locked-view" class="scene active">
+        <div class="container">
+            <h1>Shh... It's a secret!</h1>
+            <div id="countdown" class="timer">
+                Loading...
+            </div>
+            <p class="message">Come back on your birthday!</p>
+            <button id="enter-btn" style="display:none; margin-top: 20px;">Enter Party 🎉</button>
+        </div>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="BirthdayMusic.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="bg-music" loop>
+        <source src="BirthdayMusic.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Scene 2: Birthday Card (Inside Envelope) -->
+    <div id="card-view" class="scene">
+        <div class="envelope-container" id="envelope">
+            <div class="envelope-flap"></div>
+            <div class="envelope-pocket"></div>
+            <div class="card-container" id="card-container">
+                <div class="card">
+                    <div class="card-front">
+                        <h2>Happy Birthday Neha!</h2>
+                        <p>Click to Open</p>
+                    </div>
+                    <div class="card-inside">
+                        <p>Dear Neha,</p>
+                        <p>May your day be filled with joy, laughter, and endless happiness! You bring so much light
+                            into our lives.</p>
+                        <p>Wishing you the best year ahead!</p>
+                        <p class="signature">- With Love</p>
+                        <button id="get-gift-btn">Get Gift 🎁</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="click-hint">Click the envelope to open!</p>
+    </div>
+
+    <!-- Scene 3: Delivery Animation -->
+    <div id="delivery-view" class="scene">
+        <div class="road">
+            <div class="home">🏠</div>
+            <div class="car-container">
+                <div class="car">🚗</div>
+            </div>
+        </div>
+        <h2 id="delivery-text">On the way to Neha's Home...</h2>
+    </div>
+
+    <!-- Scene 4: Gift Box -->
+    <div id="gift-box-view" class="scene">
+        <div class="gift-box" id="gift-box">
+            <div class="lid"></div>
+            <div class="box"></div>
+        </div>
+        <p>Tap to open!</p>
+    </div>
+
+    <div id="final-reveal-view" class="scene">
+        <canvas id="fireworks-canvas"></canvas>
+        <div class="polaroid">
+            <img src="Neha.png" alt="Birthday Girl" id="reveal-image">
+            <div class="caption">Happy Birthday!</div>
+        </div>
+        <audio id="cry-audio" src="baby_crying.mp3"></audio>
+    </div>
+
+    <footer id="footer">
+        All rights reserved for Bright Lee
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

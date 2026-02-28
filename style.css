@@ -1,0 +1,718 @@
+/* Global Styles */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%);
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+}
+
+button {
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.scene {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.scene.active {
+    display: flex;
+    opacity: 1;
+    z-index: 10;
+}
+
+/* Scene 1: Locked */
+#locked-view {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+#locked-view::before {
+    content: '🎈🎉🎂🎁';
+    position: absolute;
+    top: 10%;
+    left: 0;
+    width: 100%;
+    font-size: 3rem;
+    opacity: 0.2;
+    letter-spacing: 50px;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.container {
+    z-index: 5;
+}
+
+.timer {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin: 20px 0;
+    font-family: 'Courier New', Courier, monospace;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+#locked-view h1 {
+    font-size: 3rem;
+    font-family: 'Dancing Script', cursive;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+#locked-view .message {
+    font-size: 1.3rem;
+    margin-top: 10px;
+}
+
+#enter-btn {
+    padding: 15px 40px;
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
+    transition: all 0.3s ease;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+#enter-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(245, 87, 108, 0.6);
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 10px 40px rgba(245, 87, 108, 0.7);
+    }
+}
+
+/* Scene 2: Envelope & Card */
+#card-view {
+    perspective: 1000px;
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    position: relative;
+}
+
+#card-view::before {
+    content: '🎊';
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    font-size: 4rem;
+    opacity: 0.3;
+    animation: spin 10s linear infinite;
+}
+
+#card-view::after {
+    content: '🎊';
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    font-size: 4rem;
+    opacity: 0.3;
+    animation: spin 10s linear infinite reverse;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.click-hint {
+    margin-top: 20px;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 2s ease-in-out infinite alternate;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0.5;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.envelope-container {
+    position: relative;
+    width: 320px;
+    height: 220px;
+    background: #ff7675;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    cursor: pointer;
+    transition: transform 0.5s;
+    z-index: 5;
+}
+
+.envelope-container:hover {
+    transform: scale(1.02);
+}
+
+.envelope-container.open {
+    transform: translateY(240px);
+    /* Move envelope DOWN so card ends up in center */
+}
+
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 160px solid transparent;
+    border-right: 160px solid transparent;
+    border-top: 110px solid #d63031;
+    /* Darker red */
+    transform-origin: top;
+    transition: transform 0.6s ease-in-out, z-index 0.2s;
+    z-index: 10;
+}
+
+.envelope-container.open .envelope-flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+    /* Move behind card when open */
+}
+
+.envelope-pocket {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 160px solid #ff7675;
+    border-right: 160px solid #ff7675;
+    border-top: 110px solid transparent;
+    z-index: 20;
+    /* Keep in front of card initially */
+}
+
+/* Card inside envelope */
+.card-container {
+    position: absolute;
+    width: 280px;
+    height: 380px;
+    bottom: 0;
+    transition: transform 1s ease-in-out, z-index 0.5s;
+    transform: translateY(100%) scale(0.5);
+    /* Hidden inside */
+    z-index: 5;
+    opacity: 0;
+}
+
+.envelope-container.open .card-container {
+    transform: translateY(-190px) scale(1.2);
+    /* Adjust to perfectly center on screen */
+    /* -190px counteracts envelope move + height diff */
+    z-index: 25;
+    /* Bring to front */
+    opacity: 1;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+    position: relative;
+}
+
+.card.flipped {
+    transform: rotateY(-180deg);
+}
+
+.card-front,
+.card-inside {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.card-front {
+    background: #fff;
+    color: #ff6b6b;
+    z-index: 2;
+}
+
+.card-front h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+}
+
+.card-inside {
+    background: #fffaf0;
+    transform: rotateY(180deg);
+    color: #333;
+}
+
+#get-gift-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.2s;
+}
+
+#get-gift-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Scene 3: Delivery Animation */
+#delivery-view {
+    background: linear-gradient(180deg, #89f7fe 0%, #66a6ff 100%);
+    overflow: hidden;
+    position: relative;
+}
+
+#delivery-view::before {
+    content: '☁️';
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    font-size: 5rem;
+    opacity: 0.6;
+    animation: drift 15s ease-in-out infinite;
+}
+
+#delivery-view::after {
+    content: '☁️';
+    position: absolute;
+    top: 20%;
+    right: 15%;
+    font-size: 4rem;
+    opacity: 0.5;
+    animation: drift 20s ease-in-out infinite reverse;
+}
+
+@keyframes drift {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(30px);
+    }
+}
+
+#delivery-text {
+    position: absolute;
+    top: 20%;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.road {
+    position: absolute;
+    bottom: 20%;
+    width: 100%;
+    height: 100px;
+    background: #555;
+    border-top: 5px solid #fff;
+    border-bottom: 5px solid #fff;
+}
+
+.home {
+    font-size: 4rem;
+    position: absolute;
+    right: 20px;
+    bottom: 100px;
+}
+
+.car-container {
+    position: absolute;
+    bottom: 20px;
+    left: -100px;
+    /* Start off screen */
+    font-size: 4rem;
+    transform: scaleX(-1);
+    /* Flips the car to face right */
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes drive {
+    0% {
+        left: -100px;
+    }
+
+    100% {
+        left: calc(100% - 150px);
+    }
+}
+
+/* Scene 4: Gift Box */
+#gift-box-view {
+    background: linear-gradient(135deg, #ffeaa7 0%, #ffcc70 100%);
+    position: relative;
+}
+
+#gift-box-view::before {
+    content: '✨';
+    position: absolute;
+    top: 15%;
+    left: 20%;
+    font-size: 3rem;
+    animation: twinkle 1.5s ease-in-out infinite;
+}
+
+#gift-box-view::after {
+    content: '✨';
+    position: absolute;
+    bottom: 15%;
+    right: 20%;
+    font-size: 3rem;
+    animation: twinkle 1.5s ease-in-out infinite 0.75s;
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+.gift-box {
+    font-size: 5rem;
+    cursor: pointer;
+    animation: bounce 2s infinite;
+}
+
+.gift-box::before {
+    content: '🎁';
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Scene 5: Reveal */
+#final-reveal-view {
+    background: #2d3436;
+    /* Dark background for fireworks */
+    overflow: hidden;
+    position: relative;
+}
+
+#fireworks-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.polaroid {
+    background: white;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transform: rotate(-5deg);
+    z-index: 10;
+    /* Above fireworks */
+}
+
+.polaroid img {
+    max-width: 300px;
+    max-height: 400px;
+    display: block;
+}
+
+.caption {
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5rem;
+    margin-top: 10px;
+    color: #333;
+}
+/* Footer */
+#footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-size: 0.9rem;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+    #locked-view h1 {
+        font-size: 2rem;
+    }
+
+    .timer {
+        font-size: 2rem;
+    }
+
+    #locked-view .message {
+        font-size: 1rem;
+    }
+
+    #enter-btn {
+        padding: 12px 30px;
+        font-size: 1.2rem;
+    }
+
+    #locked-view::before {
+        font-size: 2rem;
+        letter-spacing: 20px;
+    }
+
+    .envelope-container {
+        width: 260px;
+        height: 180px;
+    }
+
+    .envelope-flap {
+        border-left: 130px solid transparent;
+        border-right: 130px solid transparent;
+        border-top: 90px solid #d63031;
+    }
+
+    .envelope-pocket {
+        border-left: 130px solid #ff7675;
+        border-right: 130px solid #ff7675;
+        border-top: 90px solid transparent;
+    }
+
+    .card-container {
+        width: 240px;
+        height: 320px;
+    }
+
+    .envelope-container.open .card-container {
+        transform: translateY(-160px) scale(1);
+    }
+
+    .card-front h2 {
+        font-size: 1.8rem;
+    }
+
+    .card-inside {
+        font-size: 0.9rem;
+        padding: 15px;
+    }
+
+    .click-hint {
+        font-size: 1rem;
+    }
+
+    #card-view::before,
+    #card-view::after {
+        font-size: 2.5rem;
+    }
+
+    #delivery-text {
+        font-size: 1.3rem;
+        top: 15%;
+    }
+
+    .home {
+        font-size: 3rem;
+        right: 10px;
+        bottom: 80px;
+    }
+
+    .car-container {
+        font-size: 2.5rem;
+    }
+
+    #delivery-view::before,
+    #delivery-view::after {
+        font-size: 3rem;
+    }
+
+    .gift-box {
+        font-size: 4rem;
+    }
+
+    #gift-box-view p {
+        font-size: 1rem;
+    }
+
+    .polaroid {
+        padding: 10px;
+    }
+
+    .polaroid img {
+        max-width: 250px;
+        max-height: 350px;
+    }
+
+    .caption {
+        font-size: 1.2rem;
+    }
+
+    #footer {
+        font-size: 0.75rem;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    #locked-view h1 {
+        font-size: 1.5rem;
+    }
+
+    .timer {
+        font-size: 1.5rem;
+    }
+
+    #enter-btn {
+        padding: 10px 25px;
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+
+    .envelope-container {
+        width: 220px;
+        height: 150px;
+    }
+
+    .envelope-flap {
+        border-left: 110px solid transparent;
+        border-right: 110px solid transparent;
+        border-top: 75px solid #d63031;
+    }
+
+    .envelope-pocket {
+        border-left: 110px solid #ff7675;
+        border-right: 110px solid #ff7675;
+        border-top: 75px solid transparent;
+    }
+
+    .card-container {
+        width: 200px;
+        height: 280px;
+    }
+
+    .envelope-container.open .card-container {
+        transform: translateY(-140px) scale(0.95);
+    }
+
+    .card-front h2 {
+        font-size: 1.5rem;
+    }
+
+    .card-inside {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+
+    #delivery-text {
+        font-size: 1rem;
+    }
+
+    .home {
+        font-size: 2.5rem;
+    }
+
+    .car-container {
+        font-size: 2rem;
+    }
+
+    .gift-box {
+        font-size: 3rem;
+    }
+
+    .polaroid img {
+        max-width: 200px;
+        max-height: 280px;
+    }
+
+    .caption {
+        font-size: 1rem;
+    }
+
+    #footer {
+        font-size: 0.65rem;
+        padding: 6px;
+    }
+}
